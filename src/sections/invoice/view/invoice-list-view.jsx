@@ -56,12 +56,12 @@ import { InvoiceTableToolbar } from '../invoice-table-toolbar';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'invoiceNumber', label: 'Customer' },
-  { id: 'createDate', label: 'Create' },
-  { id: 'dueDate', label: 'Due' },
-  { id: 'price', label: 'Amount' },
-  { id: 'sent', label: 'Sent', align: 'center' },
-  { id: 'status', label: 'Status' },
+  { id: 'title_doc', label: 'Nomi' },
+  { id: 'come_from', label: 'Kelgan manzil' },
+  { id: 'resolution', label: 'Rezolyutsiya' },
+  { id: 'before_date', label: 'Kiritilgan sana' },
+  { id: 'after_date', label: 'Nazorat sana' },
+  { id: 'event', label: 'Holat' },
   { id: '' },
 ];
 

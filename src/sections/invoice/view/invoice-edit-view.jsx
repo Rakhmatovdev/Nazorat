@@ -8,7 +8,7 @@ import { InvoiceNewEditForm } from '../invoice-new-edit-form';
 
 // ----------------------------------------------------------------------
 
-export function InvoiceEditView({ invoice }) {
+export function InvoiceEditView() {
   return (
     <DashboardContent>
       <CustomBreadcrumbs
@@ -16,12 +16,12 @@ export function InvoiceEditView({ invoice }) {
         links={[
           { name: 'Dashboard', href: paths.dashboard.root },
           { name: 'Invoice', href: paths.dashboard.invoice.root },
-          { name: invoice?.invoiceNumber },
+          // { name: invoice?.invoiceNumber },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}
       />
 
-      <InvoiceNewEditForm currentInvoice={invoice} />
+      <InvoiceNewEditForm />
     </DashboardContent>
   );
 }

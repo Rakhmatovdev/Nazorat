@@ -57,5 +57,7 @@ export const endpoints = {
   },
   invoice: {
     list: '/api/findControllByCriteria',
+    create: '/api/addControll',
+    find: '/api/findControllById',
   },
 };

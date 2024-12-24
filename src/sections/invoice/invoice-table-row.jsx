@@ -49,7 +49,7 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
               disableTypography
               primary={
                 <Typography variant="body2" noWrap>
-                  {row.user_name}
+                  {row.title_doc}
                 </Typography>
               }
               secondary={
@@ -68,8 +68,8 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
 
         <TableCell>
           <ListItemText
-            primary={fDate(row.create_date)}
-            secondary={fTime(row.create_date)}
+            primary={row.come_from}
+            secondary={row.come_from}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
             secondaryTypographyProps={{ mt: 0.5, component: 'span', typography: 'caption' }}
           />
@@ -77,24 +77,26 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
 
         <TableCell>
           <ListItemText
-            primary={fDate(row.receive_doc_date)}
-            secondary={fTime(row.receive_doc_date)}
+            primary={row.resolution}
+            secondary={row.resolution}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
             secondaryTypographyProps={{ mt: 0.5, component: 'span', typography: 'caption' }}
           />
         </TableCell>
 
-        <TableCell>{fCurrency(row.id)}</TableCell>
+        <TableCell>{fDate(row.before_date)}</TableCell>
 
-        <TableCell align="center">{fDate(row.send_doc_date)}</TableCell>
+        <TableCell align="center">{fDate(row.after_date)}</TableCell>
 
         <TableCell>
           <Label
             variant="soft"
             color={
-              (row.status === 'paid' && 'success') ||
-              (row.status === 'pending' && 'warning') ||
-              (row.status === 'overdue' && 'error') ||
+              (row.event_id === 4 && 'success') ||
+              (row.event_id === 3 && 'warning') ||
+              (row.event_id === 2 && 'warning') ||
+              (row.event_id === 1 && 'warning') ||
+              (row.event_id === 0 && 'error') ||
               'default'
             }
           >

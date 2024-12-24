@@ -14,15 +14,13 @@ const metadata = { title: `Invoice edit | Dashboard - ${CONFIG.appName}` };
 export default function Page() {
   const { id = '' } = useParams();
 
-  const currentInvoice = _invoices.find((invoice) => invoice.id === id);
-
   return (
     <>
       <Helmet>
         <title> {metadata.title}</title>
       </Helmet>
 
-      <InvoiceEditView invoice={currentInvoice} />
+      <InvoiceEditView />
     </>
   );
 }
