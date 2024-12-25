@@ -92,10 +92,9 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
             variant="soft"
             color={
               (row.event_id === 4 && 'success') ||
-              (row.event_id === 3 && 'warning') ||
-              (row.event_id === 2 && 'warning') ||
               (row.event_id === 1 && 'warning') ||
               (row.event_id === 0 && 'error') ||
+              (row.status === 1 && 'draft') ||
               'default'
             }
           >

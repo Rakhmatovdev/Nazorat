@@ -112,45 +112,52 @@ export function InvoiceListView() {
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const getInvoiceLength = (status) => tableData.filter((item) => item.event_id === status).length;
+  const getInvoiceLengthd = (status) => tableData.filter((item) => item.status === status).length;
 
   const getTotalAmount = (status) =>
     sumBy(
       tableData.filter((item) => item.event_id === status),
       (invoice) => invoice.totalAmount
     );
+  const getTotalAmountd = (status) =>
+    sumBy(
+      tableData.filter((item) => item.status === status),
+      (invoice) => invoice.totalAmount
+    );
 
   const getPercentByStatus = (status) => (getInvoiceLength(status) / tableData.length) * 100;
+  const getPercentByStatusd = (status) => (getInvoiceLength(status) / tableData.length) * 100;
 
   const TABS = [
     {
       value: 'all',
-      label: 'All',
+      label: 'Barchasi',
       color: 'default',
       count: tableData.length,
     },
     {
-      value: '4',
-      label: 'Paid',
+      value: 4,
+      label: '4 - kun va undan ortiq',
       color: 'success',
       count: getInvoiceLength(4),
     },
     {
-      value: '2',
-      label: 'Pending',
+      value: 1,
+      label: '1 - 3  kun qolganlar',
       color: 'warning',
-      count: getInvoiceLength(2 || 3),
+      count: getInvoiceLength(1),
     },
     {
-      value: '0',
-      label: 'Overdue',
+      value: 0,
+      label: 'Muddati tugagan',
       color: 'error',
       count: getInvoiceLength(0),
     },
     {
-      value: 'draft',
-      label: 'Draft',
+      value: 'Success',
+      label: 'Bajarilganlar',
       color: 'default',
-      count: getInvoiceLength('draft'),
+      count: getInvoiceLengthd(1),
     },
   ];
 
@@ -233,7 +240,7 @@ export function InvoiceListView() {
               sx={{ py: 2 }}
             >
               <InvoiceAnalytic
-                title="Total"
+                title="Barchasi"
                 total={tableData.length}
                 percent={100}
                 price={sumBy(tableData, (invoice) => invoice.totalAmount)}
@@ -241,7 +248,7 @@ export function InvoiceListView() {
                 color={theme.vars.palette.info.main}
               />
               <InvoiceAnalytic
-                title="Paid"
+                title="4 - kun va undan ortiq"
                 total={getInvoiceLength(4)}
                 percent={getPercentByStatus(4)}
                 price={getTotalAmount(4)}
@@ -250,15 +257,15 @@ export function InvoiceListView() {
               />
 
               <InvoiceAnalytic
-                title="Pending"
-                total={getInvoiceLength(2 || 3)}
-                percent={getPercentByStatus(2 || 3)}
-                price={getTotalAmount(2 || 3)}
+                title="1 - 3 kun qolganlar"
+                total={getInvoiceLength(1)}
+                percent={getPercentByStatus(1)}
+                price={getTotalAmount(1)}
                 icon="solar:sort-by-time-bold-duotone"
                 color={theme.vars.palette.warning.main}
               />
               <InvoiceAnalytic
-                title="Overdue"
+                title="Muddati tugagan"
                 total={getInvoiceLength(0)}
                 percent={getPercentByStatus(0)}
                 price={getTotalAmount(0)}
@@ -266,10 +273,10 @@ export function InvoiceListView() {
                 color={theme.vars.palette.error.main}
               />
               <InvoiceAnalytic
-                title="Draft"
-                total={getInvoiceLength('draft')}
-                percent={getPercentByStatus('draft')}
-                price={getTotalAmount('draft')}
+                title="Bajarilganlar"
+                total={getInvoiceLengthd(1)}
+                percent={getPercentByStatusd(1)}
+                price={getTotalAmountd(1)}
                 icon="solar:file-corrupted-bold-duotone"
                 color={theme.vars.palette.text.secondary}
               />
@@ -459,24 +466,34 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
   if (name) {
     inputData = inputData.filter(
       (invoice) =>
-        invoice.invoiceNumber.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        invoice.invoiceTo.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+        invoice.title_doc.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        invoice.come_from.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        invoice.resolution.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        invoice.before_date.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        invoice.after_date.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        invoice.event.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+        invoice.user_name.toLowerCase().indexOf(name.toLowerCase()) !== -1
+    );
+  }
+  if (status !== 'all') {
+    inputData = inputData.filter(
+      (invoice) => invoice.event_id === status || (status === 'Success' && invoice.status === 1)
     );
   }
 
-  if (status !== 'all') {
-    inputData = inputData.filter((invoice) => invoice.status === status);
-  }
+  console.log(inputData);
 
   if (service.length) {
     inputData = inputData.filter((invoice) =>
-      invoice.items.some((filterItem) => service.includes(filterItem.service))
+      invoice.title_doc.some((filterItem) => service.includes(filterItem.service))
     );
   }
 
   if (!dateError) {
     if (startDate && endDate) {
-      inputData = inputData.filter((invoice) => fIsBetween(invoice.createDate, startDate, endDate));
+      inputData = inputData.filter((invoice) =>
+        fIsBetween(invoice.before_date, startDate, endDate)
+      );
     }
   }
 
