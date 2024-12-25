@@ -1,27 +1,23 @@
-import { createInvoice, findInvoice } from 'src/service';
-import { z as zod } from 'zod';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
+import { createInvoice, findInvoice, updateInvoice } from 'src/service';
+import { z as zod } from 'zod';
 
+import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import LoadingButton from '@mui/lab/LoadingButton';
 
-import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { today, fIsAfter } from 'src/utils/format-time';
+import { fIsAfter } from 'src/utils/format-time';
 
-import { _addressBooks } from 'src/_mock';
+import { Form } from 'src/components/hook-form';
 
-import { Form, schemaHelper } from 'src/components/hook-form';
-
-import { InvoiceNewEditDetails } from './invoice-new-edit-details';
-import { InvoiceNewEditAddress } from './invoice-new-edit-address';
 import { InvoiceNewEditStatusDate } from './invoice-new-edit-status-date';
 
 // ----------------------------------------------------------------------
@@ -55,32 +51,34 @@ export function InvoiceNewEditForm() {
 
   const loadingSend = useBoolean();
 
-  useEffect(() => {
-    const findInvoices = async () => {
+  const findInvoices = useCallback(async () => {
+    try {
       const { data } = await findInvoice(ParamId);
       setEdited(data.data);
-      // return 1;
-    };
-
-    findInvoices();
+    } catch (error) {
+      console.error(error);
+    }
   }, [ParamId]);
 
-  console.log(Edited);
+  useEffect(() => {
+    if (ParamId) {
+      findInvoices();
+    }
+  }, [ParamId, findInvoices]);
 
   const defaultValues = useMemo(
     () => ({
-      title_doc: Edited.title_doc || '',
-      come_from: Edited.come_from || '',
-      resolution: Edited.resolution || '',
-      send_doc_number: Edited.send_doc_number || '',
-      send_doc_date: Edited.send_doc_date || '',
-      receive_doc_number: Edited.receive_doc_number || '',
-      receive_doc_date: Edited.receive_doc_date || '',
-      after_date: Edited.after_date || '',
+      title_doc: Edited?.title_doc || '',
+      come_from: Edited?.come_from || '',
+      resolution: Edited?.resolution || '',
+      send_doc_number: Edited?.send_doc_number || '',
+      send_doc_date: Edited?.send_doc_date || '',
+      receive_doc_number: Edited?.receive_doc_number || '',
+      receive_doc_date: Edited?.receive_doc_date || '',
+      after_date: Edited?.after_date || '',
     }),
     [Edited]
   );
-
   const methods = useForm({
     mode: 'all',
     resolver: zodResolver(NewInvoiceSchema),
@@ -92,6 +90,12 @@ export function InvoiceNewEditForm() {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
+  useEffect(() => {
+    if (Edited) {
+      reset(defaultValues);
+    }
+  }, [Edited, defaultValues, reset]);
 
   // const handleSaveAsDraft = handleSubmit(async (data) => {
   //   loadingSave.onTrue();
@@ -116,8 +120,13 @@ export function InvoiceNewEditForm() {
       reset();
       loadingSend.onFalse();
       router.push(paths.dashboard.invoice.root);
+
       console.info('DATA', JSON.stringify(data, null, 2));
-      createInvoice(data);
+      if (ParamId) {
+        await updateInvoice(ParamId, data);
+      } else {
+        await createInvoice(data);
+      }
     } catch (error) {
       console.error(error);
       loadingSend.onFalse();

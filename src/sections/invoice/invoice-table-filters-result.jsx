@@ -26,7 +26,7 @@ export function InvoiceTableFiltersResult({ filters, totalResults, onResetPage, 
 
   const handleRemoveStatus = useCallback(() => {
     onResetPage();
-    filters.setState({ status: 'all' });
+    filters.setState({ edit_id: 'all' });
   }, [filters, onResetPage]);
 
   const handleRemoveDate = useCallback(() => {
@@ -42,10 +42,10 @@ export function InvoiceTableFiltersResult({ filters, totalResults, onResetPage, 
         ))}
       </FiltersBlock>
 
-      <FiltersBlock label="Status:" isShow={filters.state.status !== 'all'}>
+      <FiltersBlock label="Status:" isShow={filters.state.edit_id !== 'all'}>
         <Chip
           {...chipProps}
-          label={filters.state.status}
+          label={filters.state.edit_id}
           onDelete={handleRemoveStatus}
           sx={{ textTransform: 'capitalize' }}
         />

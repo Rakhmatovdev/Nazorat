@@ -28,7 +28,6 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
   const confirm = useBoolean();
 
   const popover = usePopover();
-  console.log(row);
 
   return (
     <>

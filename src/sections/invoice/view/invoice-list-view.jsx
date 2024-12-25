@@ -111,11 +111,11 @@ export function InvoiceListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const getInvoiceLength = (status) => tableData.filter((item) => item.status === status).length;
+  const getInvoiceLength = (status) => tableData.filter((item) => item.event_id === status).length;
 
   const getTotalAmount = (status) =>
     sumBy(
-      tableData.filter((item) => item.status === status),
+      tableData.filter((item) => item.event_id === status),
       (invoice) => invoice.totalAmount
     );
 
@@ -129,22 +129,22 @@ export function InvoiceListView() {
       count: tableData.length,
     },
     {
-      value: 'paid',
+      value: '4',
       label: 'Paid',
       color: 'success',
-      count: getInvoiceLength('paid'),
+      count: getInvoiceLength(4),
     },
     {
-      value: 'pending',
+      value: '2',
       label: 'Pending',
       color: 'warning',
-      count: getInvoiceLength('pending'),
+      count: getInvoiceLength(2 || 3),
     },
     {
-      value: 'overdue',
+      value: '0',
       label: 'Overdue',
       color: 'error',
-      count: getInvoiceLength('overdue'),
+      count: getInvoiceLength(0),
     },
     {
       value: 'draft',
@@ -242,26 +242,26 @@ export function InvoiceListView() {
               />
               <InvoiceAnalytic
                 title="Paid"
-                total={getInvoiceLength('paid')}
-                percent={getPercentByStatus('paid')}
-                price={getTotalAmount('paid')}
+                total={getInvoiceLength(4)}
+                percent={getPercentByStatus(4)}
+                price={getTotalAmount(4)}
                 icon="solar:file-check-bold-duotone"
                 color={theme.vars.palette.success.main}
               />
 
               <InvoiceAnalytic
                 title="Pending"
-                total={getInvoiceLength('pending')}
-                percent={getPercentByStatus('pending')}
-                price={getTotalAmount('pending')}
+                total={getInvoiceLength(2 || 3)}
+                percent={getPercentByStatus(2 || 3)}
+                price={getTotalAmount(2 || 3)}
                 icon="solar:sort-by-time-bold-duotone"
                 color={theme.vars.palette.warning.main}
               />
               <InvoiceAnalytic
                 title="Overdue"
-                total={getInvoiceLength('overdue')}
-                percent={getPercentByStatus('overdue')}
-                price={getTotalAmount('overdue')}
+                total={getInvoiceLength(0)}
+                percent={getPercentByStatus(0)}
+                price={getTotalAmount(0)}
                 icon="solar:bell-bing-bold-duotone"
                 color={theme.vars.palette.error.main}
               />

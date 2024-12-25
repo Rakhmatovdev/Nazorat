@@ -27,7 +27,6 @@ export function ChatRoomGroup({ participants }) {
   }, []);
 
   const totalParticipants = participants.length;
-
   const renderList = (
     <>
       {participants.map((participant) => (

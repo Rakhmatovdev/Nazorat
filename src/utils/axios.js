@@ -59,5 +59,6 @@ export const endpoints = {
     list: '/api/findControllByCriteria',
     create: '/api/addControll',
     find: '/api/findControllById',
+    update: '/api/updateControll',
   },
 };
