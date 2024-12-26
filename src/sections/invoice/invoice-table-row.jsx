@@ -21,10 +21,19 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomPopover, usePopover } from 'src/components/custom-popover';
 import { Iconify } from 'src/components/iconify';
 import { Label } from 'src/components/label';
+import { GridCheckCircleIcon } from '@mui/x-data-grid';
 
 // ----------------------------------------------------------------------
 
-export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditRow, onDeleteRow }) {
+export function InvoiceTableRow({
+  row,
+  selected,
+  onSelectRow,
+  onViewRow,
+  onEditRow,
+  onDeleteRow,
+  onStatusRow,
+}) {
   const confirm = useBoolean();
 
   const popover = usePopover();
@@ -115,6 +124,16 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
+          <MenuItem
+            onClick={() => {
+              onStatusRow();
+              popover.onClose();
+            }}
+          >
+            <GridCheckCircleIcon fontSize="small" />
+            Tasdiqlash
+          </MenuItem>
+
           <MenuItem
             onClick={() => {
               onViewRow();

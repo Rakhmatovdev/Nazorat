@@ -32,7 +32,7 @@ import { ConfirmDialog } from 'src/components/custom-dialog';
 import { Iconify } from 'src/components/iconify';
 import { Label } from 'src/components/label';
 import { Scrollbar } from 'src/components/scrollbar';
-import { toast } from 'src/components/snackbar';
+import { Snackbar, toast } from 'src/components/snackbar';
 import {
   emptyRows,
   getComparator,
@@ -45,7 +45,7 @@ import {
   useTable,
 } from 'src/components/table';
 
-import { resList } from 'src/service';
+import { deleteInvoice, resList, statusInvoice } from 'src/service';
 import { InvoiceAnalytic } from '../invoice-analytic';
 import { InvoiceTableFiltersResult } from '../invoice-table-filters-result';
 import { InvoiceTableRow } from '../invoice-table-row';
@@ -165,13 +165,16 @@ export function InvoiceListView() {
 
   const handleDeleteRow = useCallback(
     (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-
-      toast.success('Delete success!');
-
-      setTableData(deleteRow);
-
-      table.onUpdatePageDeleteRow(dataInPage.length);
+      deleteInvoice(id)
+        .then((response) => {
+          toast.success(response.data.data.message);
+          const deleteRow = tableData.filter((row) => row.id !== id);
+          setTableData(deleteRow);
+          table.onUpdatePageDeleteRow(dataInPage.length);
+        })
+        .catch(() => {
+          toast.error('Ochirishda xatolik yuz berdi!');
+        });
     },
     [dataInPage.length, table, tableData]
   );
@@ -192,6 +195,22 @@ export function InvoiceListView() {
   const handleEditRow = useCallback(
     (id) => {
       router.push(paths.dashboard.invoice.edit(id));
+    },
+    [router]
+  );
+  const handleStatusRow = useCallback(
+    (id) => {
+      setTableData((prevData) =>
+        prevData.map((item) => (item.id === id ? { ...item, status: 1 } : item))
+      );
+      router.push(paths.dashboard.invoice);
+      statusInvoice(id)
+        .then((response) => {
+          toast.success(response.data.data.message);
+        })
+        .catch(() => {
+          toast.error('Tasdiqlashda xatolik yuz berdi!');
+        });
     },
     [router]
   );
@@ -401,6 +420,7 @@ export function InvoiceListView() {
                         onViewRow={() => handleViewRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
+                        onStatusRow={() => handleStatusRow(row.id)}
                       />
                     ))}
 

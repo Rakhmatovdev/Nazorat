@@ -60,5 +60,7 @@ export const endpoints = {
     create: '/api/addControll',
     find: '/api/findControllById',
     update: '/api/updateControll',
+    status: '/api/statusControll',
+    delete: '/api/deleteControll',
   },
 };

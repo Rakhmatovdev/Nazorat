@@ -8,4 +8,6 @@ export const updateInvoice = (id, data) => axios.put(`${endpoints.invoice.update
 export const findInvoice = (id) => axios.get(`${endpoints.invoice.find}/${id}`);
 export const deleteInvoice = (id) => axios.delete(`${endpoints.invoice.delete}/${id}`);
 
+export const statusInvoice = (id) => axios.put(`${endpoints.invoice.status}/${id}`);
+
 export const resList = () => axios.get(endpoints.invoice.list);
