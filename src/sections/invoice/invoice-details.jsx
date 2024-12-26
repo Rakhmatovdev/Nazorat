@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useParams } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -36,6 +37,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export function InvoiceDetails({ invoice }) {
+  const { id } = useParams();
+  console.log(id);
+
   const [currentStatus, setCurrentStatus] = useState(invoice?.status);
 
   const handleChangeStatus = useCallback((event) => {

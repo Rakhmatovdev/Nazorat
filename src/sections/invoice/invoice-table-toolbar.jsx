@@ -123,7 +123,7 @@ export function InvoiceTableToolbar({ filters, options, dateError, onResetPage }
             fullWidth
             value={filters.state.name}
             onChange={handleFilterName}
-            placeholder="Hujjat nomi bo'yicha qidirish"
+            placeholder="Qidiruv..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

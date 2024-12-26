@@ -70,9 +70,9 @@ export const navData = [
         icon: ICONS.invoice,
         children: [
           { title: 'Hujjatlar', path: paths.dashboard.invoice.root },
-          { title: 'Details', path: paths.dashboard.invoice.demo.details },
+          // { title: 'Details', path: paths.dashboard.invoice.demo.details },
           { title: 'Create', path: paths.dashboard.invoice.new },
-          { title: 'Edit', path: paths.dashboard.invoice.demo.edit },
+          // { title: 'Edit', path: paths.dashboard.invoice.demo.edit },
         ],
       },
       {

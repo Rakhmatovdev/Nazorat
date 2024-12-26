@@ -58,7 +58,7 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
                   onClick={onViewRow}
                   sx={{ color: 'text.disabled', cursor: 'pointer' }}
                 >
-                  {row.invoiceNumber}
+                  {row.title_doc}
                 </Link>
               }
             />
@@ -83,10 +83,10 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
           />
         </TableCell>
 
-        <TableCell>{fDate(row.before_date)}</TableCell>
+        <TableCell>{fDate(row?.before_date)}</TableCell>
 
         <TableCell align="center">{fDate(row.after_date)}</TableCell>
-
+        <TableCell>{fDate(row.status_date)}</TableCell>
         <TableCell>
           <Label
             variant="soft"

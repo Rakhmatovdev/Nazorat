@@ -61,6 +61,7 @@ const TABLE_HEAD = [
   { id: 'resolution', label: 'Rezolyutsiya' },
   { id: 'before_date', label: 'Kiritilgan sana' },
   { id: 'after_date', label: 'Nazorat sana' },
+  { id: 'status_date', label: 'Bajarilgan sana' },
   { id: 'event', label: 'Holat' },
   { id: '' },
 ];
@@ -111,7 +112,8 @@ export function InvoiceListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  const getInvoiceLength = (status) => tableData.filter((item) => item.event_id === status).length;
+  const getInvoiceLength = (status) =>
+    tableData.filter((item) => item.event_id === status && item.status !== 1).length;
   const getInvoiceLengthd = (status) => tableData.filter((item) => item.status === status).length;
 
   const getTotalAmount = (status) =>
@@ -131,9 +133,9 @@ export function InvoiceListView() {
   const TABS = [
     {
       value: 'all',
-      label: 'Barchasi',
+      label: 'Ishlovdagi hujjatlar',
       color: 'default',
-      count: tableData.length,
+      count: tableData.length - getInvoiceLengthd(1),
     },
     {
       value: 4,
@@ -240,8 +242,8 @@ export function InvoiceListView() {
               sx={{ py: 2 }}
             >
               <InvoiceAnalytic
-                title="Barchasi"
-                total={tableData.length}
+                title="Ishlovdagi hujjatlar"
+                total={tableData.length - getInvoiceLengthd(1)}
                 percent={100}
                 price={sumBy(tableData, (invoice) => invoice.totalAmount)}
                 icon="solar:bill-list-bold-duotone"
@@ -477,8 +479,12 @@ function applyFilter({ inputData, comparator, filters, dateError }) {
   }
   if (status !== 'all') {
     inputData = inputData.filter(
-      (invoice) => invoice.event_id === status || (status === 'Success' && invoice.status === 1)
+      (invoice) =>
+        (invoice.event_id === status && invoice.status !== 1) ||
+        (status === 'Success' && invoice.status === 1)
     );
+  } else {
+    inputData = inputData.filter((invoice) => invoice.status === 0);
   }
 
   console.log(inputData);
