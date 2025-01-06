@@ -137,6 +137,7 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/invoice/new`,
       details: (id) => `${ROOTS.DASHBOARD}/invoice/${id}`,
       edit: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit`,
+      adduser: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/adduser`,
       demo: {
         details: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}`,
         edit: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}/edit`,

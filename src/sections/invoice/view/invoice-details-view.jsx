@@ -9,6 +9,7 @@ import { InvoiceDetails } from '../invoice-details';
 // ----------------------------------------------------------------------
 
 export function InvoiceDetailsView({ invoice }) {
+  
   return (
     <DashboardContent>
       <CustomBreadcrumbs

@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
         const { user } = res.data;
 
         setState({ user: { ...user, accessToken }, loading: false });
+        
       } else {
         setState({ user: null, loading: false });
       }

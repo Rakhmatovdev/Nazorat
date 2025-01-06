@@ -1,5 +1,4 @@
-import { useState, useCallback } from 'react';
-
+import { useState, useCallback,useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -27,6 +26,7 @@ import { Iconify } from 'src/components/iconify';
 import { Scrollbar } from 'src/components/scrollbar';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
+import { resListUser } from 'src/service';
 import {
   useTable,
   emptyRows,
@@ -43,16 +43,19 @@ import { UserTableRow } from '../user-table-row';
 import { UserTableToolbar } from '../user-table-toolbar';
 import { UserTableFiltersResult } from '../user-table-filters-result';
 
+
 // ----------------------------------------------------------------------
 
 const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
-  { id: 'phoneNumber', label: 'Phone number', width: 180 },
-  { id: 'company', label: 'Company', width: 220 },
-  { id: 'role', label: 'Role', width: 180 },
-  { id: 'status', label: 'Status', width: 100 },
+  { id: 'first_last_name', label: 'F.I.O' },
+  { id: 'username', label: 'Login', width: 180 },
+  { id: 'organization_name', label: 'Boshqarma', width: 220 },
+  { id: 'otdel_name', label: 'Bolim', width: 180 },
+  { id: 'role_name', label: 'Mansab', width: 100 },
+  { id: 'telefon', label: 'Telefon', width: 100 },
+  { id: 'is_active_flag', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
 
@@ -65,7 +68,13 @@ export function UserListView() {
 
   const confirm = useBoolean();
 
-  const [tableData, setTableData] = useState(_userList);
+  const [tableData, setTableData] = useState([]);
+
+   useEffect(() => {
+     resListUser().then((response) => {
+        setTableData(response.data.dataList);
+      });
+    }, []);
 
   const filters = useSetState({ name: '', role: [], status: 'all' });
 
@@ -127,11 +136,10 @@ export function UserListView() {
     <>
       <DashboardContent>
         <CustomBreadcrumbs
-          heading="List"
+          heading="Foydalanuvchilar"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'User', href: paths.dashboard.user.root },
-            { name: 'List' },
+            { name: 'Foydalanuvchilar' },
           ]}
           action={
             <Button
@@ -169,14 +177,13 @@ export function UserListView() {
                       'soft'
                     }
                     color={
-                      (tab.value === 'active' && 'success') ||
-                      (tab.value === 'pending' && 'warning') ||
-                      (tab.value === 'banned' && 'error') ||
+                      (tab.value === 1 && 'success') ||
+                      (tab.value === 0 && 'error') ||
                       'default'
                     }
                   >
-                    {['active', 'pending', 'banned', 'rejected'].includes(tab.value)
-                      ? tableData.filter((user) => user.status === tab.value).length
+                    {[1 , 0 ].includes(tab.value)
+                      ? tableData.filter((user) => user.is_active_flag === tab.value).length
                       : tableData.length}
                   </Label>
                 }
@@ -322,7 +329,8 @@ function applyFilter({ inputData, comparator, filters }) {
   }
 
   if (status !== 'all') {
-    inputData = inputData.filter((user) => user.status === status);
+    inputData = inputData.filter((user) => user.is_active_flag === status);
+    console.log(inputData);
   }
 
   if (role.length) {

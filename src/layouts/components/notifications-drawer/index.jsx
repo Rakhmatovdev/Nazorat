@@ -52,7 +52,7 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-        Notifications
+        Muddati tugagan nazoratdagi hujjatlar
       </Typography>
 
       {!!totalUnRead && (
@@ -73,30 +73,7 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
     </Stack>
   );
 
-  const renderTabs = (
-    <CustomTabs variant="fullWidth" value={currentTab} onChange={handleChangeTab}>
-      {TABS.map((tab) => (
-        <Tab
-          key={tab.value}
-          iconPosition="end"
-          value={tab.value}
-          label={tab.label}
-          icon={
-            <Label
-              variant={((tab.value === 'all' || tab.value === currentTab) && 'filled') || 'soft'}
-              color={
-                (tab.value === 'unread' && 'info') ||
-                (tab.value === 'archived' && 'success') ||
-                'default'
-              }
-            >
-              {tab.count}
-            </Label>
-          }
-        />
-      ))}
-    </CustomTabs>
-  );
+
 
   const renderList = (
     <Scrollbar>
@@ -146,15 +123,11 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
       >
         {renderHead}
 
-        {renderTabs}
+     
 
-        {renderList}
+       
 
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth size="large">
-            View all
-          </Button>
-        </Box>
+         
       </Drawer>
     </>
   );

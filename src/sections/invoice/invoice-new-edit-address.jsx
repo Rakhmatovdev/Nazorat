@@ -1,131 +1,116 @@
-import { useFormContext } from 'react-hook-form';
+import { useCallback, useEffect, useState } from 'react';
+import { useFormContext,useForm } from 'react-hook-form';
+import Stack from '@mui/material/Stack'; 
+import { Field } from 'src/components/hook-form';
+import { useRouter } from 'src/routes/hooks';
 
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import {
+  emptyRows,
+  getComparator,
+  rowInPage,
+  TableEmptyRows,
+  TableHeadCustom,
+  TableNoData,
+  TablePaginationCustom,
+  TableSelectedAction,
+  useTable,
+} from 'src/components/table';
+import { getUserList,addUserToDocument } from 'src/service';
+ 
 
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
-
-import { _addressBooks } from 'src/_mock';
-
-import { Iconify } from 'src/components/iconify';
-
-import { AddressListDialog } from '../address';
 
 // ----------------------------------------------------------------------
 
 export function InvoiceNewEditAddress() {
-  const {
-    watch,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
-
-  const mdUp = useResponsive('up', 'md');
-
+  const { watch } = useFormContext();
   const values = watch();
 
-  const { invoiceFrom, invoiceTo } = values;
+  const [tableData, setTableData] = useState([]);
+ 
+  useEffect(() => {
+    getUserList().then((response) => {
+      setTableData(response.data);
+    });
+  }, []);
 
-  const from = useBoolean();
-
-  const to = useBoolean();
-
+  
   return (
     <>
-      <Stack
-        spacing={{ xs: 3, md: 5 }}
-        direction={{ xs: 'column', md: 'row' }}
-        divider={
-          <Divider
-            flexItem
-            orientation={mdUp ? 'vertical' : 'horizontal'}
-            sx={{ borderStyle: 'dashed' }}
-          />
-        }
-        sx={{ p: 3 }}
-      >
-        <Stack sx={{ width: 1 }}>
-          <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
-            <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
-              From:
-            </Typography>
-
-            <IconButton onClick={from.onTrue}>
-              <Iconify icon="solar:pen-bold" />
-            </IconButton>
-          </Stack>
-
-          <Stack spacing={1}>
-            <Typography variant="subtitle2">{invoiceFrom.name}</Typography>
-            <Typography variant="body2">{invoiceFrom.fullAddress}</Typography>
-            <Typography variant="body2"> {invoiceFrom.phoneNumber}</Typography>
-          </Stack>
-        </Stack>
-
-        <Stack sx={{ width: 1 }}>
-          <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
-            <Typography variant="h6" sx={{ color: 'text.disabled', flexGrow: 1 }}>
-              To:
-            </Typography>
-
-            <IconButton onClick={to.onTrue}>
-              <Iconify icon={invoiceTo ? 'solar:pen-bold' : 'mingcute:add-line'} />
-            </IconButton>
-          </Stack>
-
-          {invoiceTo ? (
-            <Stack spacing={1}>
-              <Typography variant="subtitle2">{invoiceTo.name}</Typography>
-              <Typography variant="body2">{invoiceTo.fullAddress}</Typography>
-              <Typography variant="body2"> {invoiceTo.phoneNumber}</Typography>
-            </Stack>
-          ) : (
-            <Typography typography="caption" sx={{ color: 'error.main' }}>
-              {errors.invoiceTo?.message}
-            </Typography>
-          )}
-        </Stack>
+      <Stack spacing={2} direction={{ xs: 'row' }} sx={{}}>
+      <table border="1" cellPadding="10" style={{ width: '100%', margin: '20px 0', borderCollapse: 'collapse' }}>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Foydalanuvchi</th>
+          <th>Bolim</th>
+       
+        </tr>
+      </thead>
+      <tbody>
+        {tableData.map((row) => (
+          <tr key={row.id}>
+            <td>{row.id}</td>
+            <td>{row.first_last_name}</td>
+            <td>{row.organization_name}</td>
+        
+          </tr>
+        ))}
+      </tbody>
+    </table>
+       </Stack>
+        <Stack spacing={2} direction={{ xs: 'column' }} sx={{ p: 3 }}>
+      <Field.Text name="title_doc" label="Nomi" />
+      <Field.Text name="come_from" label="Kelgan manzil" value={values.come_from} />
+      <Field.Text name="resolution" label="Resolution" value={values.resolution} />
+      <Stack spacing={2} direction={{ xs: 'row' }} sx={{}}>
+        <Field.Text
+          name="send_doc_number"
+          label="Yuborilgan hujjat nomeri"
+          value={values.send_doc_number}
+        />
+        <Field.DatePicker name="send_doc_date" label="Yuborilgan hujjat sanasi" />
+      </Stack>
+      <Stack spacing={2} direction={{ xs: 'row' }} sx={{}}>
+        <Field.Text
+          name="receive_doc_number"
+          label="Kelgan hujjat nomeri"
+          value={values.receive_doc_number}
+        />
+        <Field.DatePicker name="receive_doc_date" label="Kelgan hujjat sanasi" />
       </Stack>
 
-      <AddressListDialog
-        title="Customers"
-        open={from.value}
-        onClose={from.onFalse}
-        selected={(selectedId) => invoiceFrom?.id === selectedId}
-        onSelect={(address) => setValue('invoiceFrom', address)}
-        list={_addressBooks}
-        action={
-          <Button
-            size="small"
-            startIcon={<Iconify icon="mingcute:add-line" />}
-            sx={{ alignSelf: 'flex-end' }}
-          >
-            New
-          </Button>
-        }
-      />
+      <Stack spacing={2} direction={{ xs: 'row' }} sx={{}}>
+      <Field.DatePicker name="after_date" label="Nazorat sanasi" />
+        <Field.Text
+          name="event"
+          label="Nazorat holati"
+          value={values.event}
+        />
+      </Stack>
 
-      <AddressListDialog
-        title="Customers"
-        open={to.value}
-        onClose={to.onFalse}
-        selected={(selectedId) => invoiceTo?.id === selectedId}
-        onSelect={(address) => setValue('invoiceTo', address)}
-        list={_addressBooks}
-        action={
-          <Button
-            size="small"
-            startIcon={<Iconify icon="mingcute:add-line" />}
-            sx={{ alignSelf: 'flex-end' }}
-          >
-            New
-          </Button>
-        }
-      />
-    </>
+      <Stack spacing={2} direction={{ xs: 'row' }} sx={{}}>
+      <Field.DatePicker name="before_date" label="Kiritilgan sana" />
+        <Field.Text
+          name="event"
+          label="Nazoratga kiritgan foydalanuvchi"
+          value={values.user_name}
+        />
+      </Stack>
+      <Stack spacing={2} direction={{ xs: 'row' }} sx={{}}>
+      
+        <Field.Text
+          name="event"
+          label="Bajarilganlik holati"
+          value={values.status ?  'Bajarilgan' : 'Bajarilmagan' }
+        />
+        <Field.DatePicker name="status_date" label="Bajarilgan sana" />
+      </Stack>
+    
+ 
+</Stack>
+ </>
   );
 }
+
+ 
+

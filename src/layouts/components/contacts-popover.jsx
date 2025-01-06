@@ -51,7 +51,7 @@ export function ContactsPopover({ data = [], sx, ...other }) {
         }}
       >
         <Typography variant="h6" sx={{ p: 1.5 }}>
-          Contacts <span>({data.length})</span>
+          Onlayn foydalanuvchilar soni <span>({data.length})</span>
         </Typography>
 
         <Scrollbar sx={{ height: 320, width: 320 }}>

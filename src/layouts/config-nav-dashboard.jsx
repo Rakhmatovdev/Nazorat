@@ -67,11 +67,11 @@ export const navData = [
       {
         title: "Nazorat bo'limi",
         path: paths.dashboard.invoice.root,
-        icon: ICONS.invoice,
+        icon: ICONS.course,
         children: [
           { title: 'Hujjatlar', path: paths.dashboard.invoice.root },
           // { title: 'Details', path: paths.dashboard.invoice.demo.details },
-          { title: 'Create', path: paths.dashboard.invoice.new },
+          { title: 'Yangi yaratish', path: paths.dashboard.invoice.new },
           // { title: 'Edit', path: paths.dashboard.invoice.demo.edit },
         ],
       },
@@ -80,12 +80,11 @@ export const navData = [
         path: paths.dashboard.user.root,
         icon: ICONS.user,
         children: [
-          { title: 'Profile', path: paths.dashboard.user.root },
-          { title: 'Cards', path: paths.dashboard.user.cards },
-          { title: 'List', path: paths.dashboard.user.list },
-          { title: 'Create', path: paths.dashboard.user.new },
-          { title: 'Edit', path: paths.dashboard.user.demo.edit },
-          { title: 'Account', path: paths.dashboard.user.account },
+         
+          { title: 'Foydalanuvchilar', path: paths.dashboard.user.list },
+          { title: 'Yangi foydalanuvchi yaratish', path: paths.dashboard.user.new },
+      
+          
         ],
       },
 

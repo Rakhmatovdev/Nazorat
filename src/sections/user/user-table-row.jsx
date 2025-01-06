@@ -38,36 +38,36 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
 
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Avatar alt={row.name} src={row.avatarUrl} />
+            <Avatar alt={row.first_last_name} src={row.avatarUrl} />
 
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Link color="inherit" onClick={onEditRow} sx={{ cursor: 'pointer' }}>
-                {row.name}
+                {row.first_last_name}
               </Link>
               <Box component="span" sx={{ color: 'text.disabled' }}>
-                {row.email}
+                {row.first_last_name}
               </Box>
             </Stack>
           </Stack>
         </TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.phoneNumber}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.username}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.company}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.organization_name}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.role}</TableCell>
-
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.otdel_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.role_name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.telefon}</TableCell>
         <TableCell>
           <Label
             variant="soft"
             color={
-              (row.status === 'active' && 'success') ||
-              (row.status === 'pending' && 'warning') ||
-              (row.status === 'banned' && 'error') ||
+              (row.is_active_flag === 1 && 'success') ||
+              (row.is_active_flag === 0 && 'error') ||
               'default'
             }
           >
-            {row.status}
+            {row.is_active_flag ? 'Aktiv' : 'Aktiv emas'}
           </Label>
         </TableCell>
 

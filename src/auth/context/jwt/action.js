@@ -2,6 +2,7 @@ import axios, { endpoints } from 'src/utils/axios';
 
 import { setSession } from './utils';
 import { STORAGE_KEY } from './constant';
+ 
 
 /** **************************************
  * Sign in
@@ -19,6 +20,7 @@ export const signInWithPassword = async ({ username, password }) => {
     }
 
     setSession(data.token);
+
   } catch (error) {
     console.error('Error during sign in:', error);
     throw error;
@@ -38,7 +40,6 @@ export const signUp = async ({ email, password, firstName, lastName }) => {
 
   try {
     const res = await axios.post(endpoints.auth.signUp, params);
-
     const { accessToken } = res.data;
 
     if (!accessToken) {

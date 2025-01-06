@@ -62,5 +62,15 @@ export const endpoints = {
     update: '/api/updateControll',
     status: '/api/statusControll',
     delete: '/api/deleteControll',
+    getuserlist:'/api/users',
+    addUserToDocument:'/api/connective/addPersonToControll',
+  },
+  users: {
+    list: '/api/users',
+    roles: '/api/users/roles',
+    find: '/api/findControllById',
+    update: '/api/updateControll',
+    status: '/api/statusControll',
+    delete: '/api/deleteControll',
   },
 };

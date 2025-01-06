@@ -4,20 +4,14 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
 import { createInvoice, findInvoice, updateInvoice } from 'src/service';
 import { z as zod } from 'zod';
-
 import LoadingButton from '@mui/lab/LoadingButton';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-
 import { useRouter } from 'src/routes/hooks';
 import { paths } from 'src/routes/paths';
-
 import { useBoolean } from 'src/hooks/use-boolean';
-
 import { fIsAfter } from 'src/utils/format-time';
-
 import { Form } from 'src/components/hook-form';
-
 import { InvoiceNewEditStatusDate } from './invoice-new-edit-status-date';
 
 // ----------------------------------------------------------------------
@@ -46,8 +40,6 @@ export function InvoiceNewEditForm() {
   const { id: ParamId } = useParams();
 
   const [Edited, setEdited] = useState({});
-
-  // const loadingSave = useBoolean();
 
   const loadingSend = useBoolean();
 
@@ -97,21 +89,6 @@ export function InvoiceNewEditForm() {
     }
   }, [Edited, defaultValues, reset]);
 
-  // const handleSaveAsDraft = handleSubmit(async (data) => {
-  //   loadingSave.onTrue();
-
-  //   try {
-  //     await new Promise((resolve) => setTimeout(resolve, 500));
-  //     reset();
-  //     loadingSave.onFalse();
-  //     router.push(paths.dashboard.invoice.root);
-  //     console.info('DATA', JSON.stringify(data, null, 2));
-  //   } catch (error) {
-  //     console.error(error);
-  //     loadingSave.onFalse();
-  //   }
-  // });
-
   const handleCreateAndSend = handleSubmit(async (data) => {
     loadingSend.onTrue();
 
@@ -136,7 +113,7 @@ export function InvoiceNewEditForm() {
   return (
     <Form methods={methods}>
       <Card>
-        {/* <InvoiceNewEditAddress /> */}
+       {/*  <InvoiceNewEditAddress />  */}
 
         <InvoiceNewEditStatusDate />
 
@@ -144,23 +121,13 @@ export function InvoiceNewEditForm() {
       </Card>
 
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
-        {/* <LoadingButton
-          color="inherit"
-          size="large"
-          variant="outlined"
-          loading={loadingSave.value && isSubmitting}
-          onClick={handleSaveAsDraft}
-        >
-          Save as draft
-        </LoadingButton> */}
-
         <LoadingButton
           size="large"
           variant="contained"
           loading={loadingSend.value && isSubmitting}
           onClick={handleCreateAndSend}
         >
-          {Edited ? 'Update' : 'Create'}
+          {Edited.id ? "O'zgartirish" : "Yaratish"}
         </LoadingButton>
       </Stack>
     </Form>

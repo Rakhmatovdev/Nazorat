@@ -33,6 +33,7 @@ export function InvoiceTableRow({
   onEditRow,
   onDeleteRow,
   onStatusRow,
+ 
 }) {
   const confirm = useBoolean();
 
@@ -124,6 +125,8 @@ export function InvoiceTableRow({
         slotProps={{ arrow: { placement: 'right-top' } }}
       >
         <MenuList>
+    
+
           <MenuItem
             onClick={() => {
               onStatusRow();

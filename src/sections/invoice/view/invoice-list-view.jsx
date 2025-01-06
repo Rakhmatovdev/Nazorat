@@ -200,17 +200,16 @@ export function InvoiceListView() {
   );
   const handleStatusRow = useCallback(
     (id) => {
+      statusInvoice(id).then((response) => {
+        toast.success(response.data.data.message);
+      })
+      .catch(() => {
+        toast.error('Tasdiqlashda xatolik yuz berdi!');
+      });
       setTableData((prevData) =>
         prevData.map((item) => (item.id === id ? { ...item, status: 1 } : item))
       );
       router.push(paths.dashboard.invoice);
-      statusInvoice(id)
-        .then((response) => {
-          toast.success(response.data.data.message);
-        })
-        .catch(() => {
-          toast.error('Tasdiqlashda xatolik yuz berdi!');
-        });
     },
     [router]
   );
@@ -222,6 +221,12 @@ export function InvoiceListView() {
     [router]
   );
 
+ const handleUserAddRow = useCallback(
+    (id) => {
+      router.push(paths.dashboard.invoice.adduser(id));
+    },
+    [router]
+  );
   const handleFilterStatus = useCallback(
     (event, newValue) => {
       table.onResetPage();
@@ -247,7 +252,7 @@ export function InvoiceListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New invoice
+              Yangi yaratish
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -349,44 +354,6 @@ export function InvoiceListView() {
             />
           )}
           <Box sx={{ position: 'relative' }}>
-            <TableSelectedAction
-              dense={table.dense}
-              numSelected={table.selected.length}
-              rowCount={dataFiltered.length}
-              onSelectAllRows={(checked) => {
-                table.onSelectAllRows(
-                  checked,
-                  dataFiltered.map((row) => row.id)
-                );
-              }}
-              action={
-                <Stack direction="row">
-                  <Tooltip title="Sent">
-                    <IconButton color="primary">
-                      <Iconify icon="iconamoon:send-fill" />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Download">
-                    <IconButton color="primary">
-                      <Iconify icon="eva:download-outline" />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Print">
-                    <IconButton color="primary">
-                      <Iconify icon="solar:printer-minimalistic-bold" />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Delete">
-                    <IconButton color="primary" onClick={confirm.onTrue}>
-                      <Iconify icon="solar:trash-bin-trash-bold" />
-                    </IconButton>
-                  </Tooltip>
-                </Stack>
-              }
-            />
 
             <Scrollbar sx={{ minHeight: 444 }}>
               <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 800 }}>
@@ -421,6 +388,7 @@ export function InvoiceListView() {
                         onEditRow={() => handleEditRow(row.id)}
                         onDeleteRow={() => handleDeleteRow(row.id)}
                         onStatusRow={() => handleStatusRow(row.id)}
+                        onUserAddRow={() => handleUserAddRow(row.id)}
                       />
                     ))}
 
