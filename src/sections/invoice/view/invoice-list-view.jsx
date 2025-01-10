@@ -206,8 +206,9 @@ export function InvoiceListView() {
       .catch(() => {
         toast.error('Tasdiqlashda xatolik yuz berdi!');
       });
+
       setTableData((prevData) =>
-        prevData.map((item) => (item.id === id ? { ...item, status: 1 } : item))
+        prevData.map((item) => (item.id === id ? { ...item, status: 1, status_date: Date.now() } : item))
       );
       router.push(paths.dashboard.invoice);
     },
@@ -269,7 +270,7 @@ export function InvoiceListView() {
                 title="Ishlovdagi hujjatlar"
                 total={tableData.length - getInvoiceLengthd(1)}
                 percent={100}
-                price={sumBy(tableData, (invoice) => invoice.totalAmount)}
+                
                 icon="solar:bill-list-bold-duotone"
                 color={theme.vars.palette.info.main}
               />
@@ -277,7 +278,7 @@ export function InvoiceListView() {
                 title="4 - kun va undan ortiq"
                 total={getInvoiceLength(4)}
                 percent={getPercentByStatus(4)}
-                price={getTotalAmount(4)}
+               
                 icon="solar:file-check-bold-duotone"
                 color={theme.vars.palette.success.main}
               />
@@ -286,7 +287,7 @@ export function InvoiceListView() {
                 title="1 - 3 kun qolganlar"
                 total={getInvoiceLength(1)}
                 percent={getPercentByStatus(1)}
-                price={getTotalAmount(1)}
+                
                 icon="solar:sort-by-time-bold-duotone"
                 color={theme.vars.palette.warning.main}
               />
@@ -294,7 +295,6 @@ export function InvoiceListView() {
                 title="Muddati tugagan"
                 total={getInvoiceLength(0)}
                 percent={getPercentByStatus(0)}
-                price={getTotalAmount(0)}
                 icon="solar:bell-bing-bold-duotone"
                 color={theme.vars.palette.error.main}
               />
@@ -302,7 +302,7 @@ export function InvoiceListView() {
                 title="Bajarilganlar"
                 total={getInvoiceLengthd(1)}
                 percent={getPercentByStatusd(1)}
-                price={getTotalAmountd(1)}
+                
                 icon="solar:file-corrupted-bold-duotone"
                 color={theme.vars.palette.text.secondary}
               />
